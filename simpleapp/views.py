@@ -1,9 +1,11 @@
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView
-from .models import Product
-from datetime import datetime
-from .filters import ProductFilter
+from django.urls import reverse_lazy
+from django.views.generic import (
+    ListView, DetailView, CreateView
+)
 
+from .filters import ProductFilter
+from .forms import ProductForm
+from .models import Product
 
 
 class ProductsList(ListView):
@@ -54,3 +56,12 @@ class ProductDetail(DetailView):
     template_name = 'product.html'
     # Название объекта, в котором будет выбранный пользователем продукт
     context_object_name = 'product'
+
+
+class ProductCreate(CreateView):
+    # Указываем нашу разработанную форму
+    form_class = ProductForm
+    # модель товаров
+    model = Product
+    # и новый шаблон, в котором используется форма.
+    template_name = 'product_edit.html'
