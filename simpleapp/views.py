@@ -1,6 +1,10 @@
 from django.urls import reverse_lazy
 from django.views.generic import (
-    ListView, DetailView, CreateView
+    ListView,
+    DetailView,
+    CreateView,
+    UpdateView,
+    DeleteView
 )
 
 from .filters import ProductFilter
@@ -19,7 +23,7 @@ class ProductsList(ListView):
     # Это имя списка, в котором будут лежать все объекты.
     # Его надо указать, чтобы обратиться к списку объектов в html-шаблоне.
     context_object_name = 'products'
-    paginate_by = 1
+    paginate_by = 5
 
     def get_queryset(self):
         # Получаем обычный запрос
@@ -65,3 +69,14 @@ class ProductCreate(CreateView):
     model = Product
     # и новый шаблон, в котором используется форма.
     template_name = 'product_edit.html'
+
+# Добавляем представление для изменения товара.
+class ProductUpdate(UpdateView):
+    form_class = ProductForm
+    model = Product
+    template_name = 'product_edit.html'
+
+class ProductDelete(DeleteView):
+    model = Product
+    template_name = 'product_delete.html'
+    success_url = reverse_lazy('product_list')
